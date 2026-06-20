@@ -8,6 +8,16 @@ import SearchBar from "../Components/Ui/SearchBar/SearchBar";
 import TagBadge from "../Components/Ui/TagBadge/TagBadge";
 import SectionHeader from "../Components/Ui/SectionHeader/SectionHeader";
 
+import SpotCard from "../Components/Ui/SpotCard/SpotCard";
+import MoodFilter from "../Components/discover/MoodFilter";
+import CuisineFilter from "../Components/discover/CuisineFilter";
+import FiltersSidebar from "../Components/discover/FiltersSidebar";
+import SortDropdown from "../Components/discover/SortDropdown";
+import SpotList from "../Components/discover/SpotList";
+
+
+
+
 export default function UITest() {
   // Inject Google Fonts and Material Symbols for visual fidelity
   useEffect(() => {
@@ -39,10 +49,27 @@ export default function UITest() {
     setFocusedInput(true);
   };
 
+  const [selectedMoods, setSelectedMoods] = useState([]);
+  const [selectedCuisine, setSelectedCuisine] = useState("All Cuisines");
+  const [sortValue, setSortValue] = useState("Rating");
+  const [sidebarFilters, setSidebarFilters] = useState({
+    moods: [],
+    cuisine: "All Cuisines",
+  });
+
+  const MOCK_SPOTS = [
+    { id: "1", image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800", name: "The Glass Pavilion", location: "Williamsburg, Brooklyn", rating: 4.9, price: "$$$", category: "Modern American", tags: ["#Quiet", "#OutdoorSeating"] },
+    { id: "2", image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=600", name: "Velvet Room", location: "Soho, Manhattan", rating: 4.7, price: "$$", category: "Cocktail Bar", tags: ["#LateNight"] },
+    { id: "3", image: "https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=600", name: "Metric Brew", location: "West Loop, Chicago", rating: 4.6, price: "$$", category: "Artisan Coffee", tags: ["#Insta-worthy"] },
+    { id: "4", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600", name: "Flora Terrace", location: "Chelsea, NYC", rating: 4.8, price: "$", category: "Mediterranean", tags: ["#Insta-worthy"] },
+    { id: "5", image: "https://images.unsplash.com/photo-1481833761820-0509d3217039?w=600", name: "Chapter One", location: "Back Bay, Boston", rating: 4.9, price: "$$$", category: "Tea & Spirits", tags: ["#Quiet", "#Cozy"] },
+  ];
+
+
   return (
     <div className="min-h-screen bg-background text-on-surface font-body-md py-12 px-6 sm:px-8 lg:px-12">
       <div className="max-w-7xl mx-auto space-y-12">
-        
+
         {/* PAGE HEADER */}
         <header className="border-b border-outline-variant/30 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
@@ -92,8 +119,8 @@ export default function UITest() {
                 Test Case 2: Title + Subtitle
               </span>
               <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
-                <SectionHeader 
-                  title="Discover Quiet Spaces" 
+                <SectionHeader
+                  title="Discover Quiet Spaces"
                   subtitle="Explore libraries, work-friendly cafes, and hidden gardens in your city."
                 />
               </div>
@@ -105,8 +132,8 @@ export default function UITest() {
                 Test Case 3: Edge Case — Extreme Long Title
               </span>
               <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
-                <SectionHeader 
-                  title="A Highly Detailed Section Header for Categorizing Places that have an Exceptionally High Concentration of Quiet Studying Cafes and Outdoors Working Stations" 
+                <SectionHeader
+                  title="A Highly Detailed Section Header for Categorizing Places that have an Exceptionally High Concentration of Quiet Studying Cafes and Outdoors Working Stations"
                   subtitle="Standard sub-title explanation goes here."
                 />
               </div>
@@ -118,8 +145,8 @@ export default function UITest() {
                 Test Case 4: Edge Case — Extreme Long Subtitle
               </span>
               <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
-                <SectionHeader 
-                  title="Standard Header Title" 
+                <SectionHeader
+                  title="Standard Header Title"
                   subtitle="This subtitle contains a very long paragraph to verify the max-width wrapping behaviors. It is designed to check how multiple sentences read when rendered inside the header layout, ensuring it does not stretch the line length to an unreadable width on ultra-wide screens. By default, it uses a max-w-3xl constraint to keep text legible."
                 />
               </div>
@@ -341,10 +368,10 @@ export default function UITest() {
                   Test 4: Validation / Error State
                 </span>
                 <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
-                  <InputField 
-                    label="Username Registry" 
-                    placeholder="Enter unique name" 
-                    error="This username is already taken. Try another." 
+                  <InputField
+                    label="Username Registry"
+                    placeholder="Enter unique name"
+                    error="This username is already taken. Try another."
                     defaultValue="taken_name"
                   />
                 </div>
@@ -356,10 +383,10 @@ export default function UITest() {
                   Test 5: Disabled State
                 </span>
                 <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
-                  <InputField 
-                    label="System Identifier" 
-                    defaultValue="SYS-987-PRO" 
-                    disabled={true} 
+                  <InputField
+                    label="System Identifier"
+                    defaultValue="SYS-987-PRO"
+                    disabled={true}
                     icon="lock"
                   />
                 </div>
@@ -371,10 +398,10 @@ export default function UITest() {
                   Test 6: Email Type Validation
                 </span>
                 <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
-                  <InputField 
-                    label="Email Address" 
-                    type="email" 
-                    placeholder="contact@spotly.com" 
+                  <InputField
+                    label="Email Address"
+                    type="email"
+                    placeholder="contact@spotly.com"
                     icon="mail"
                   />
                 </div>
@@ -386,10 +413,10 @@ export default function UITest() {
                   Test 7: Password Type (Masked Value)
                 </span>
                 <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
-                  <InputField 
-                    label="Account Password" 
-                    type="password" 
-                    value={passwordValue} 
+                  <InputField
+                    label="Account Password"
+                    type="password"
+                    value={passwordValue}
                     onChange={(e) => setPasswordValue(e.target.value)}
                     icon="key"
                   />
@@ -402,9 +429,9 @@ export default function UITest() {
                   Test 8: Long Text Value (Truncation check)
                 </span>
                 <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
-                  <InputField 
-                    label="Extremely Long Text Input" 
-                    defaultValue="This is an incredibly long text string to check how the input handles overflowing content horizontally when the user continues typing beyond the layout constraints." 
+                  <InputField
+                    label="Extremely Long Text Input"
+                    defaultValue="This is an incredibly long text string to check how the input handles overflowing content horizontally when the user continues typing beyond the layout constraints."
                   />
                 </div>
               </div>
@@ -420,10 +447,10 @@ export default function UITest() {
                   Click the button below to programmatically focus the input field, triggering its active styling (colored outline border and shadow).
                 </p>
                 <div className="flex flex-col sm:flex-row items-end gap-4">
-                  <InputField 
+                  <InputField
                     ref={inputRef}
-                    label="Interactive Focus Field" 
-                    placeholder="Click the focus trigger button..." 
+                    label="Interactive Focus Field"
+                    placeholder="Click the focus trigger button..."
                     onFocus={() => setFocusedInput(true)}
                     onBlur={() => setFocusedInput(false)}
                     className="max-w-md"
@@ -643,6 +670,234 @@ export default function UITest() {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- */}
+        {/* SECTION 6: SPOT CARD */}
+        {/* ---------------------------------------------------- */}
+        <section className="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/20 shadow-sm space-y-6">
+          <SectionHeader
+            title="SpotCard Component Tests"
+            subtitle="Testing variants, saved state, tag overflow, and missing data edge cases."
+          />
+
+          <div className="space-y-8 divide-y divide-outline-variant/20">
+
+            {/* Test 1: Default Variant */}
+            <div className="pt-4 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 1: Default Variant (Standard Grid Cards)
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <SpotCard spot={{ id: "1", image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600", name: "The Glass Pavilion", location: "Williamsburg, Brooklyn", rating: 4.9, price: "$$$", category: "Modern American", tags: ["#Quiet", "#OutdoorSeating"] }} />
+                  <SpotCard spot={{ id: "2", image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=600", name: "Velvet Room", location: "Soho, Manhattan", rating: 4.7, price: "$$", category: "Cocktail Bar", tags: ["#LateNight"] }} />
+                  <SpotCard spot={{ id: "3", image: "https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=600", name: "Metric Brew", location: "West Loop, Chicago", rating: 4.6, price: "$$", category: "Artisan Coffee", tags: ["#Insta-worthy"] }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Test 2: Featured Variant */}
+            <div className="pt-6 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 2: Featured Variant (Large Hero Card)
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+                <div className="grid grid-cols-2 gap-4">
+                  <SpotCard variant="featured" spot={{ id: "1", image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800", name: "The Glass Pavilion", location: "Williamsburg, Brooklyn", rating: 4.9, price: "$$$", category: "Modern American", tags: ["#Quiet", "#OutdoorSeating"] }} />
+                  <div className="flex flex-col gap-4">
+                    <SpotCard spot={{ id: "2", image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=600", name: "Velvet Room", location: "Soho, Manhattan", rating: 4.7, price: "$$", category: "Cocktail Bar", tags: ["#LateNight"] }} />
+                    <SpotCard spot={{ id: "3", image: "https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=600", name: "Metric Brew", location: "West Loop, Chicago", rating: 4.6, price: "$$", category: "Artisan Coffee", tags: ["#WorkFriendly"] }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Test 3: Bookmark Toggle */}
+            <div className="pt-6 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 3: Bookmark Toggle (Click the bookmark icon)
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+              
+                <div className="max-w-xs">
+                  <SpotCard spot={{ id: "4", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600", name: "Flora Terrace", location: "Chelsea, NYC", rating: 4.8, price: "$", category: "Mediterranean", tags: ["#Insta-worthy"] }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Test 4: Tag Overflow */}
+            <div className="pt-6 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 4: Edge Case — Many Tags (Overflow Behavior)
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+                <div className="max-w-xs">
+                  <SpotCard spot={{ id: "5", image: "https://images.unsplash.com/photo-1481833761820-0509d3217039?w=600", name: "Chapter One", location: "Back Bay, Boston", rating: 4.9, price: "$$$", category: "Tea & Spirits", tags: ["#Quiet", "#LateNight", "#Cozy", "#WorkFriendly", "#Insta-worthy"] }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Test 5: Missing Data */}
+            <div className="pt-6 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 5: Edge Case — Missing / Empty Data
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+                <p className="text-xs text-on-surface-variant/80 mb-4">
+                  No image, no tags, no price or rating. This tests how the card handles incomplete data gracefully without breaking the layout or functionality.
+                </p>
+                <div className="max-w-xs">
+                  <SpotCard spot={{ id: "6", image: "", name: "Unknown Venue", location: "", rating: null, price: "", category: "", tags: [] }} />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- */}
+        {/* SECTION 7: FILTERS SUBCOMPONENTS */}
+        {/* ---------------------------------------------------- */}
+        <section className="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/20 shadow-sm space-y-6">
+          <SectionHeader
+            title="Filters Subcomponents Tests"
+            subtitle="Testing MoodFilter, CuisineFilter individually then combined in FiltersSidebar."
+          />
+
+          <div className="space-y-8 divide-y divide-outline-variant/20">
+
+            {/* MoodFilter */}
+            <div className="pt-4 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 1: MoodFilter (Multi-select toggle)
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10 max-w-sm">
+                <MoodFilter
+                  selected={selectedMoods}
+                  onChange={setSelectedMoods}
+                />
+                <p className="text-xs text-on-surface-variant mt-3">
+                  Selected: <span className="text-primary font-medium">{selectedMoods.join(", ") || "none"}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* CuisineFilter */}
+            <div className="pt-6 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 2: CuisineFilter (Dropdown select)
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10 max-w-sm">
+                <CuisineFilter
+                  value={selectedCuisine}
+                  onChange={setSelectedCuisine}
+                />
+                <p className="text-xs text-on-surface-variant mt-3">
+                  Selected: <span className="text-primary font-medium">{selectedCuisine}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* FiltersSidebar */}
+            <div className="pt-6 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 3: FiltersSidebar (All filters combined)
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+                <FiltersSidebar
+                  filters={sidebarFilters}
+                  onChange={setSidebarFilters}
+                  onApply={() => alert(`Applied!\nMoods: ${sidebarFilters.moods.join(", ") || "none"}\nCuisine: ${sidebarFilters.cuisine}`)}
+                />
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- */}
+        {/* SECTION 8: SORT DROPDOWN */}
+        {/* ---------------------------------------------------- */}
+        <section className="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/20 shadow-sm space-y-6">
+          <SectionHeader
+            title="SortDropdown Component Tests"
+            subtitle="Testing sort options and active selection state."
+          />
+
+          <div className="space-y-8 divide-y divide-outline-variant/20">
+
+            {/* Test 1: Default */}
+            <div className="pt-4 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 1: Default Sort Dropdown
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10 flex items-center gap-4">
+                <SortDropdown value={sortValue} onChange={setSortValue} />
+                <p className="text-xs text-on-surface-variant">
+                  Current: <span className="text-primary font-medium">{sortValue}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Test 2: Inside header row like DiscoverPage */}
+            <div className="pt-6 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 2: In Context (Like DiscoverPage Header Row)
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-on-surface">Found 12 "Quiet" spots</h2>
+                  <SortDropdown value={sortValue} onChange={setSortValue} />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- */}
+        {/* SECTION 9: SPOT LIST */}
+        {/* ---------------------------------------------------- */}
+        <section className="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/20 shadow-sm space-y-6">
+          <SectionHeader
+            title="SpotList Component Tests"
+            subtitle="Testing full grid layout with featured first card, and empty state."
+          />
+
+          <div className="space-y-8 divide-y divide-outline-variant/20">
+
+            {/* Test 1: Full List */}
+            <div className="pt-4 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 1: Full SpotList (5 spots — first card featured)
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+                <SpotList spots={MOCK_SPOTS} />
+              </div>
+            </div>
+
+            {/* Test 2: Single Spot */}
+            <div className="pt-6 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 2: Single Spot (Edge Case)
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+                <SpotList spots={[MOCK_SPOTS[0]]} />
+              </div>
+            </div>
+
+            {/* Test 3: Empty State */}
+            <div className="pt-6 space-y-2">
+              <span className="text-xs font-semibold text-primary/70 block uppercase tracking-wider">
+                Test Case 3: Empty State (No Results)
+              </span>
+              <div className="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+                <SpotList spots={[]} />
+              </div>
+            </div>
+
           </div>
         </section>
 
